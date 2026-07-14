@@ -96,10 +96,50 @@ function PasswordForm({ onUnlock }: { onUnlock: () => void }) {
 
 /* ================= content ================= */
 
+const SECTIONS: { id: string; code: string; label: string }[] = [
+  { id: "gap", code: "00", label: "Confidence gap" },
+  { id: "q00", code: "Q0", label: "Master vs. job" },
+  { id: "shortlist", code: "SL", label: "Shortlist" },
+  { id: "fulllist", code: "FL", label: "Full list" },
+  { id: "contacts", code: "CE", label: "Cold email" },
+  { id: "roadmap", code: "RM", label: "Roadmap" },
+  { id: "altpath", code: "AP", label: "Alt. path" },
+];
+
+function JumpNav() {
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ block: "start" });
+  };
+  return (
+    <nav
+      aria-label="Section jump nav"
+      className="sticky top-0 z-20 -mx-4 border-b border-border bg-background/90 px-4 backdrop-blur sm:mx-0 sm:px-0"
+    >
+      <div className="container-tight">
+        <ul className="flex gap-1.5 overflow-x-auto py-2.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {SECTIONS.map((s) => (
+            <li key={s.id} className="shrink-0">
+              <button
+                type="button"
+                onClick={() => scrollTo(s.id)}
+                className="mono-label flex items-center gap-1.5 whitespace-nowrap border border-border px-2.5 py-1 text-foreground transition-colors hover:border-primary/60 hover:text-primary"
+              >
+                <span className="text-primary">{s.code}</span>
+                {s.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+  );
+}
+
 function MastersPlanPage() {
   return (
     <div className="relative min-h-screen bg-background text-foreground">
       <div className="pcb-grid pointer-events-none fixed inset-0 z-0 opacity-30" aria-hidden />
+      <JumpNav />
       <main className="container-tight relative z-10 max-w-4xl space-y-20 py-20 md:py-28">
         <header>
           <p className="mono-label text-primary">// OPS_LOG · MASTERS_PLAN · REV_4</p>
@@ -118,7 +158,7 @@ function MastersPlanPage() {
           </div>
         </header>
 
-        <Block eyebrow="PRIORITY_00" title="The resume-confidence gap comes first">
+        <Block id="gap" eyebrow="PRIORITY_00" title="The resume-confidence gap comes first">
           <p>
             Your resume claims Go REST/gRPC and Docker/K8s/Helm work across two C-DOT internships
             and the UPF API Server project. You said you&apos;re not confident in either — and
@@ -135,7 +175,7 @@ function MastersPlanPage() {
           </p>
         </Block>
 
-        <Block eyebrow="Q_00" title="Master vs. job — recap">
+        <Block id="q00" eyebrow="Q_00" title="Master vs. job — recap">
           <p>
             Master-first, weighted toward Canada and Germany over the US or Switzerland — your
             goal is working abroad, not the single most prestigious degree, and Canada/Germany
@@ -146,6 +186,7 @@ function MastersPlanPage() {
         </Block>
 
         <Block
+          id="shortlist"
           eyebrow="SHORTLIST"
           title="The balanced shortlist — prestige + mobility, EU-leaning"
           note="Prestige weighted up per your call, especially in the EU — where it mostly doesn't fight mobility the way it does in the US/Switzerland."
@@ -175,7 +216,7 @@ function MastersPlanPage() {
           </p>
         </Block>
 
-        <Block eyebrow="FULL_LIST" title="Full list — 58 universities">
+        <Block id="fulllist" eyebrow="FULL_LIST" title="Full list — 58 universities">
           <p className="mb-4">
             Grouped by region.{" "}
             <span className="border border-amber/30 bg-amber/10 px-1.5 py-0.5 font-mono text-[10px] uppercase text-amber">
@@ -281,7 +322,7 @@ function MastersPlanPage() {
           />
         </Block>
 
-        <Block eyebrow="CONTACTS" title="Who to actually cold email">
+        <Block id="contacts" eyebrow="CONTACTS" title="Who to actually cold email">
           <p className="mb-4">19 names. Verify each lab page before writing — people move.</p>
           <div className="overflow-x-auto">
             <table className="w-full min-w-[560px] font-mono text-xs">
@@ -325,7 +366,7 @@ function MastersPlanPage() {
           </div>
         </Block>
 
-        <Block eyebrow="ROADMAP" title="The roadmap">
+        <Block id="roadmap" eyebrow="ROADMAP" title="The roadmap">
           <p>
             A literal daily calendar through Fall 2028 would be false precision. What&apos;s here
             instead: a real daily/weekly plan for the next 10 weeks, a repeatable weekly rhythm
@@ -377,7 +418,7 @@ function MastersPlanPage() {
           </ol>
         </Block>
 
-        <Block eyebrow="ALT_PATH" title="Alternate path — job first, fully fleshed">
+        <Block id="altpath" eyebrow="ALT_PATH" title="Alternate path — job first, fully fleshed">
           <p>
             Not a footnote — a real second plan if Phase 0&apos;s self-test changes the read, or an
             offer is too good to defer. Redirect Phase 4&apos;s energy into landing the strongest
@@ -414,18 +455,20 @@ function MastersPlanPage() {
 /* ================= shared bits ================= */
 
 function Block({
+  id,
   eyebrow,
   title,
   note,
   children,
 }: {
+  id?: string;
   eyebrow: string;
   title: string;
   note?: string;
   children: ReactNode;
 }) {
   return (
-    <section className="scroll-mt-24">
+    <section id={id} className="scroll-mt-16">
       <div className="mb-4 flex items-center gap-3">
         <span className="mono-label text-primary">// {eyebrow}</span>
         <span className="h-px flex-1 bg-border" />

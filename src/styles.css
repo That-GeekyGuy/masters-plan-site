@@ -38,6 +38,7 @@
   }
   html {
     background: var(--color-background);
+    scroll-behavior: smooth;
   }
   body {
     background-color: var(--color-background);
@@ -94,4 +95,10 @@
 :focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
 }
