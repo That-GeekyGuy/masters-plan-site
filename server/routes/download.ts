@@ -1,4 +1,4 @@
-import { type Ctx, FILE_PREFIX, type FileMeta, ID_RE, isExpired } from "../../server/lib";
+import { type Ctx, FILE_PREFIX, type FileMeta, ID_RE, isExpired } from "../lib";
 
 /**
  * GET /f/:id — public download. Anyone with the link can fetch it until it

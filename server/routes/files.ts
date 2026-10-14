@@ -9,7 +9,7 @@ import {
   requireAuth,
   sanitizeName,
   sweepExpired,
-} from "../../../server/lib";
+} from "../lib";
 
 /** Cloudflare's free plan caps a request body at 100 MB. */
 const MAX_BYTES = 100 * 1024 * 1024;

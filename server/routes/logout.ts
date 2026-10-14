@@ -1,4 +1,4 @@
-import { type Ctx, clearCookie, isSecure, json } from "../../server/lib";
+import { type Ctx, clearCookie, isSecure, json } from "../lib";
 
 /** POST /api/logout → clears the session cookie */
 export const onRequestPost = async ({ request }: Ctx) =>

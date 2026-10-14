@@ -8,7 +8,7 @@ import {
   readSettings,
   requireAuth,
   validateSettings,
-} from "../../server/lib";
+} from "../lib";
 
 const limits = { minTtlSeconds: MIN_TTL_SECONDS, maxTtlSeconds: MAX_TTL_SECONDS };
 

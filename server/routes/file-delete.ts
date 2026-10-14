@@ -1,4 +1,4 @@
-import { type Ctx, FILE_PREFIX, ID_RE, error, json, requireAuth } from "../../../server/lib";
+import { type Ctx, FILE_PREFIX, ID_RE, error, json, requireAuth } from "../lib";
 
 /** DELETE /api/files/:id */
 export const onRequestDelete = requireAuth(async ({ params, env }: Ctx) => {

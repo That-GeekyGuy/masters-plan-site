@@ -1,19 +1,20 @@
 /// <reference types="@cloudflare/workers-types" />
-/**
- * Shared helpers for the filebin Pages Functions.
- *
- * Lives outside /functions on purpose: every file under /functions becomes a
- * route, so helpers go here and are imported relatively.
- */
+/** Shared helpers for the filebin Worker (entry point: server/index.ts). */
 
 export interface Env {
+  /** The built Vite site (dist/), served for every non-API path. */
+  ASSETS: Fetcher;
   /** R2 bucket holding uploads (files/<id>) and settings (_meta/settings.json). */
   BUCKET: R2Bucket;
   /** Set as an encrypted secret in Cloudflare — never commit it. */
   FILEBIN_PASSWORD: string;
 }
 
-export type Ctx = EventContext<Env, string, Record<string, unknown>>;
+export interface Ctx {
+  request: Request;
+  env: Env;
+  params: Record<string, string>;
+}
 
 /* ---------------- responses ---------------- */
 
@@ -112,9 +113,9 @@ function safeDecode(s: string): string {
 }
 
 /**
- * Deletes every expired object. Pages Functions can't run on a cron, so this
- * runs lazily whenever the owner lists files — and downloads check expiry
- * themselves, so an expired file is never served even before it's swept.
+ * Deletes every expired object. Runs hourly on the Worker's cron trigger and
+ * whenever the owner lists files. Downloads also check expiry themselves, so an
+ * expired file is never served even between sweeps.
  */
 export async function sweepExpired(env: Env): Promise<R2Object[]> {
   const live: R2Object[] = [];

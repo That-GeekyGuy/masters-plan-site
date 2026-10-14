@@ -1,4 +1,4 @@
-import { type Ctx, isAuthed, json } from "../../server/lib";
+import { type Ctx, isAuthed, json } from "../lib";
 
 /** GET /api/session → { authed, configured } */
 export const onRequestGet = async ({ request, env }: Ctx) =>

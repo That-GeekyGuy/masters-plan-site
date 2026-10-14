@@ -1,4 +1,4 @@
-import { type Ctx, error, isSecure, json, passwordMatches, sessionCookie } from "../../server/lib";
+import { type Ctx, error, isSecure, json, passwordMatches, sessionCookie } from "../lib";
 
 /** POST /api/login  { password } → sets an HttpOnly session cookie */
 export const onRequestPost = async ({ request, env }: Ctx) => {

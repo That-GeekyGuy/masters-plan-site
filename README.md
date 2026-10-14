@@ -17,15 +17,13 @@ bun install
 bun run dev
 ```
 
-## Deploy (Cloudflare Pages, subdomain)
+## Deploy (Cloudflare Workers, subdomain)
 
-1. Push this repo to a **private** GitHub repo.
-2. Cloudflare dashboard → Workers & Pages → Create → connect this repo.
-   - Build command: `bun run build` (or `npm run build`)
-   - Build output directory: `dist`
-3. Once deployed, add a custom domain on the Pages project: `ops.that-geekyguy.xyz` (or whatever
-   subdomain you want) → Cloudflare adds the CNAME automatically since the zone is already yours.
-4. To change the gate password: see the comment at the top of `src/App.tsx`.
+Deployed as a **Worker with static assets** via Workers Builds: every push runs
+`bun run build` then `npx wrangler deploy`, which reads `wrangler.jsonc`.
+Push to `master` → production; other branches → preview versions.
+
+To change the plan's gate password: see the comment at the top of `src/plan/PlanApp.tsx`.
 
 ## Filebin
 
@@ -36,13 +34,13 @@ bun run dev
 | `/` | Masters plan (old client-side gate, unchanged) | client gate |
 | `/f/<id>` | Public download link | none — the 128-bit id is the secret |
 
-Backend is Cloudflare **Pages Functions** (`functions/`, helpers in `server/`) on **R2**. All
+Backend is a Cloudflare **Worker** (`server/index.ts`, routes in `server/routes/`) on **R2**. The Worker only runs for `/api/*` and `/f/*`; everything else is served straight from `dist/`. All
 free-tier: R2 gives 10 GB storage; Cloudflare caps a request body at **100 MB**, so that's the
 per-file limit.
 
 How expiry works: each file stores `expiresAt` in its R2 metadata. Downloads check it and refuse
-(and delete) expired files, so nothing is served past its TTL. Pages Functions can't run on a cron,
-so leftover expired objects are swept whenever you open the upload page. Optional backstop: add an
+(and delete) expired files, so nothing is served past its TTL. An hourly cron trigger deletes
+expired objects, and opening the upload page sweeps too. Optional backstop: add an
 R2 lifecycle rule on the `files/` prefix that deletes objects older than your longest TTL.
 
 Security notes:
@@ -56,16 +54,16 @@ Security notes:
 1. **Create the bucket:** Cloudflare dashboard → R2 → Create bucket → name it `filebin`
    (or change `bucket_name` in `wrangler.toml`). Enabling R2 asks for a payment method even on
    the free tier.
-2. **Set the password secret:** Workers & Pages → this project → Settings → Variables and Secrets
-   → add `FILEBIN_PASSWORD` as a **Secret** (Production, and Preview if you use previews). Use a
+2. **Set the password secret:** Workers & Pages → `masters-plan-site` → Settings → Variables and Secrets
+   → add `FILEBIN_PASSWORD` as type **Secret**. Use a
    long passphrase — this one *is* real security.
-3. Push. `wrangler.toml` binds the bucket as `BUCKET`; Pages picks it up on the next deploy.
+3. Push. `wrangler.jsonc` binds the bucket as `BUCKET`. The deploy fails until the bucket exists.
 
 ### Local dev with the API
 
 ```bash
 echo 'FILEBIN_PASSWORD=dev-password' > .dev.vars   # gitignored
-bun run build && bunx wrangler pages dev dist      # http://localhost:8788, local R2 emulation
+bun run build && bunx wrangler dev                 # http://localhost:8787, local R2 emulation
 ```
 
 `bun run dev` (plain Vite) still works for UI tweaks, but the API calls will fail without wrangler.
