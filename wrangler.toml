@@ -1,0 +1,9 @@
+# Cloudflare Pages config. With this file present, bindings below are the
+# source of truth (the dashboard's binding settings are ignored).
+name = "masters-plan-site"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-10-01"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "filebin"
