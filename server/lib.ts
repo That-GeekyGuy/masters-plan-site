@@ -8,6 +8,8 @@ export interface Env {
   BUCKET: R2Bucket;
   /** Set as an encrypted secret in Cloudflare — never commit it. */
   FILEBIN_PASSWORD: string;
+  /** Which deployed version is answering; shown only while the password is missing. */
+  CF_VERSION_METADATA?: WorkerVersionMetadata;
 }
 
 export interface Ctx {

@@ -23,5 +23,7 @@
   "r2_buckets": [{ "binding": "BUCKET", "bucket_name": "filebin" }],
   // Hourly sweep of expired uploads (cron triggers are free).
   "triggers": { "crons": ["17 * * * *"] },
+  // Lets /bin/api/session report the running version while the password is missing.
+  "version_metadata": { "binding": "CF_VERSION_METADATA" },
   "observability": { "enabled": true }
 }
