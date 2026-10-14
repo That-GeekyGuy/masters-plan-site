@@ -1,6 +1,6 @@
 # masters-plan-site
 
-A private **filebin** (upload → share link → auto-expire) plus the masters plan at `/plan`.
+A private **filebin** (upload → share link → auto-expire) at `/bin`, alongside the masters plan at `/`.
 
 Standalone page — the masters-abroad roadmap — styled to match the "Signal Path" interface
 from [tech-core-chronicle](https://that-geekyguy.xyz) (same color tokens, same fonts:
@@ -31,9 +31,9 @@ bun run dev
 
 | Route | What | Auth |
 |---|---|---|
-| `/` | Upload (drag/drop, multi-file, progress) + live files with countdowns | server password |
-| `/settings` | TTL for new uploads (presets or custom, 1 min – 365 days, or never) + burn-after-read | server password |
-| `/plan` | Masters plan (old client-side gate, unchanged) | client gate |
+| `/bin` | Upload (drag/drop, multi-file, progress) + live files with countdowns | server password |
+| `/bin/settings` | TTL for new uploads (presets or custom, 1 min – 365 days, or never) + burn-after-read | server password |
+| `/` | Masters plan (old client-side gate, unchanged) | client gate |
 | `/f/<id>` | Public download link | none — the 128-bit id is the secret |
 
 Backend is Cloudflare **Pages Functions** (`functions/`, helpers in `server/`) on **R2**. All

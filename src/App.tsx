@@ -9,20 +9,22 @@ type Session = { authed: boolean; configured: boolean } | { error: string };
 
 /**
  * Routes:
- *   /          filebin upload + live files   (server-side auth)
- *   /settings  default TTL for new uploads   (server-side auth)
- *   /plan      masters plan (its own client-side gate, unchanged)
+ *   /              masters plan (its own client-side gate, unchanged)
+ *   /bin           filebin upload + live files   (server-side auth)
+ *   /bin/settings  default TTL for new uploads   (server-side auth)
  *   /f/:id     public download — served by a Pages Function, never reaches React
  */
 export default function App() {
   const path = usePath();
 
-  useEffect(() => {
-    document.title = path === "/plan" ? "restricted // masters-plan" : "restricted // filebin";
-  }, [path]);
+  const inBin = path === "/bin" || path.startsWith("/bin/");
 
-  if (path === "/plan") return <PlanApp />;
-  return <Filebin path={path} />;
+  useEffect(() => {
+    document.title = inBin ? "restricted // filebin" : "restricted // masters-plan";
+  }, [inBin]);
+
+  if (!inBin) return <PlanApp />;
+  return <Filebin path={path.replace(/\/+$/, "")} />;
 }
 
 function Filebin({ path }: { path: string }) {
@@ -60,7 +62,7 @@ function Filebin({ path }: { path: string }) {
 
   return (
     <Shell path={path} onLogout={logout}>
-      {path === "/settings" ? <SettingsPage onAuthLost={lost} /> : <UploadPage onAuthLost={lost} />}
+      {path === "/bin/settings" ? <SettingsPage onAuthLost={lost} /> : <UploadPage onAuthLost={lost} />}
     </Shell>
   );
 }

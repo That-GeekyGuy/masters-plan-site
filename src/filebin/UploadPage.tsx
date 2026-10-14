@@ -147,7 +147,7 @@ export function UploadPage({ onAuthLost }: { onAuthLost: () => void }) {
         </span>
         {settings?.burnAfterRead && <span className="text-amber">BURN AFTER READ · ON</span>}
         <span>MAX · 100 MB / FILE</span>
-        <Link href="/settings" className="ml-auto text-primary hover:underline">
+        <Link href="/bin/settings" className="ml-auto text-primary hover:underline">
           Change TTL →
         </Link>
       </div>

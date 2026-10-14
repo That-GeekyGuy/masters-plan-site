@@ -201,7 +201,7 @@ export function SettingsPage({ onAuthLost }: { onAuthLost: () => void }) {
               {status.msg}
             </span>
           )}
-          <Link href="/" className="mono-label ml-auto hover:text-primary">
+          <Link href="/bin" className="mono-label ml-auto hover:text-primary">
             ← Back to upload
           </Link>
         </div>
