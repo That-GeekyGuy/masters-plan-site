@@ -194,7 +194,7 @@ export function clearCookie(secure: boolean): string {
 function cookieString(value: string, maxAge: number, secure: boolean): string {
   return [
     `${COOKIE}=${value}`,
-    "Path=/",
+    "Path=/bin",
     `Max-Age=${maxAge}`,
     "HttpOnly",
     "SameSite=Strict",

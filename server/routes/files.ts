@@ -66,7 +66,7 @@ export const onRequestPut = requireAuth(async ({ request, env }: Ctx) => {
       id,
       name: meta.name,
       size: length,
-      url: `${new URL(request.url).origin}/f/${id}`,
+      url: `${new URL(request.url).origin}/bin/f/${id}`,
       expiresAt: Number(meta.expiresAt) || null,
       burnAfterRead: settings.burnAfterRead,
     },

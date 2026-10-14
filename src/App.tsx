@@ -3,28 +3,20 @@ import { api } from "./filebin/api";
 import { SettingsPage } from "./filebin/SettingsPage";
 import { UploadPage } from "./filebin/UploadPage";
 import { LoginForm, Shell, usePath } from "./filebin/ui";
-import PlanApp from "./plan/PlanApp";
 
 type Session = { authed: boolean; configured: boolean } | { error: string };
 
 /**
  * Routes:
- *   /              masters plan (its own client-side gate, unchanged)
- *   /bin           filebin upload + live files   (server-side auth)
+ * Everything lives under /bin so it can sit on the main domain as its own page
+ * (that-geekyguy.xyz/bin) while the main site keeps every other path.
+ *   /bin           upload + live files           (server-side auth)
  *   /bin/settings  default TTL for new uploads   (server-side auth)
- *   /f/:id     public download — served by the Worker (server/), never reaches React
+ *   /bin/f/:id     public download — served by the Worker (server/), never reaches React
  */
 export default function App() {
-  const path = usePath();
-
-  const inBin = path === "/bin" || path.startsWith("/bin/");
-
-  useEffect(() => {
-    document.title = inBin ? "restricted // filebin" : "restricted // masters-plan";
-  }, [inBin]);
-
-  if (!inBin) return <PlanApp />;
-  return <Filebin path={path.replace(/\/+$/, "")} />;
+  const path = usePath().replace(/(.)\/+$/, "$1");
+  return <Filebin path={path} />;
 }
 
 function Filebin({ path }: { path: string }) {

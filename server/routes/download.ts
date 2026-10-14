@@ -1,7 +1,7 @@
 import { type Ctx, FILE_PREFIX, type FileMeta, ID_RE, isExpired } from "../lib";
 
 /**
- * GET /f/:id — public download. Anyone with the link can fetch it until it
+ * GET /bin/f/:id — public download. Anyone with the link can fetch it until it
  * expires; the 128-bit random id is what keeps it private.
  */
 

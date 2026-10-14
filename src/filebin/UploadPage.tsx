@@ -131,7 +131,7 @@ export function UploadPage({ onAuthLost }: { onAuthLost: () => void }) {
     if (e.dataTransfer.files.length) void startUploads(e.dataTransfer.files);
   };
 
-  const linkFor = (id: string) => `${window.location.origin}/f/${id}`;
+  const linkFor = (id: string) => `${window.location.origin}/bin/f/${id}`;
 
   return (
     <>
@@ -234,7 +234,7 @@ export function UploadPage({ onAuthLost }: { onAuthLost: () => void }) {
             <li key={f.id} className="surface-panel flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center">
               <div className="min-w-0 flex-1">
                 <a
-                  href={`/f/${f.id}`}
+                  href={`/bin/f/${f.id}`}
                   target="_blank"
                   rel="noreferrer"
                   className="block truncate font-mono text-sm text-foreground hover:text-primary"

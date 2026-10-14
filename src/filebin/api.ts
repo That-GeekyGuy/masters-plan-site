@@ -52,14 +52,14 @@ const jsonInit = (method: string, data: unknown): RequestInit => ({
 });
 
 export const api = {
-  session: () => call<{ authed: boolean; configured: boolean }>("/api/session"),
-  login: (password: string) => call<{ ok: true }>("/api/login", jsonInit("POST", { password })),
-  logout: () => call<{ ok: true }>("/api/logout", { method: "POST" }),
-  list: () => call<{ files: FileItem[] }>("/api/files"),
-  remove: (id: string) => call<{ ok: true }>(`/api/files/${id}`, { method: "DELETE" }),
-  getSettings: () => call<{ settings: Settings; limits: Limits }>("/api/settings"),
+  session: () => call<{ authed: boolean; configured: boolean }>("/bin/api/session"),
+  login: (password: string) => call<{ ok: true }>("/bin/api/login", jsonInit("POST", { password })),
+  logout: () => call<{ ok: true }>("/bin/api/logout", { method: "POST" }),
+  list: () => call<{ files: FileItem[] }>("/bin/api/files"),
+  remove: (id: string) => call<{ ok: true }>(`/bin/api/files/${id}`, { method: "DELETE" }),
+  getSettings: () => call<{ settings: Settings; limits: Limits }>("/bin/api/settings"),
   saveSettings: (s: Settings) =>
-    call<{ settings: Settings; limits: Limits }>("/api/settings", jsonInit("PUT", s)),
+    call<{ settings: Settings; limits: Limits }>("/bin/api/settings", jsonInit("PUT", s)),
 };
 
 export interface UploadResult {
@@ -78,7 +78,7 @@ export function upload(
 ): { promise: Promise<UploadResult>; abort: () => void } {
   const xhr = new XMLHttpRequest();
   const promise = new Promise<UploadResult>((resolve, reject) => {
-    xhr.open("PUT", "/api/files");
+    xhr.open("PUT", "/bin/api/files");
     xhr.setRequestHeader("x-filename", encodeURIComponent(file.name));
     xhr.setRequestHeader("content-type", file.type || "application/octet-stream");
     xhr.upload.onprogress = (e) => e.lengthComputable && onProgress(e.loaded / e.total);

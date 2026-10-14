@@ -45,7 +45,6 @@ export const inputCls =
 const NAV = [
   { href: "/bin", code: "UP", label: "Upload" },
   { href: "/bin/settings", code: "TTL", label: "Settings" },
-  { href: "/", code: "MP", label: "Plan" },
 ];
 
 export function Shell({
