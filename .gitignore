@@ -5,3 +5,4 @@ dist
 # local secrets + wrangler state
 .dev.vars
 .wrangler/
+bun.lock

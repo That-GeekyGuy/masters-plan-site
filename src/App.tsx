@@ -12,7 +12,7 @@ type Session = { authed: boolean; configured: boolean } | { error: string };
  *   /              masters plan (its own client-side gate, unchanged)
  *   /bin           filebin upload + live files   (server-side auth)
  *   /bin/settings  default TTL for new uploads   (server-side auth)
- *   /f/:id     public download — served by a Pages Function, never reaches React
+ *   /f/:id     public download — served by the Worker (server/), never reaches React
  */
 export default function App() {
   const path = usePath();
